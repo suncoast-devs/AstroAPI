@@ -33,11 +33,24 @@ namespace AstroAPI.Controllers
         public async Task<ActionResult<NasaResponse>> GetImageOfTheDay()
         {
             var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.nasa.gov/planetary/apod?api_key={this.NASA_API_KEY}");
-            // TODO, cache things!
-            // response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsAsync<NasaResponse>();
-            return result;
+            var _url = $"https://api.nasa.gov/planetary/apod?api_key={this.NASA_API_KEY}";
+            var service = new Cache.CacheService();
+            var cached = await service.GetItem(_url);
+            if (cached == null)
+            {
+                var response = await client.GetAsync(_url);
+                var result = await response.Content.ReadAsAsync<NasaResponse>();
+                await service.InsertItem(_url, result);
+                result.FromCache = false;
+                return result;
+            }
+            else
+            {
+                var rv = cached.Content as NasaResponse;
+                rv.FromCache = true;
+                return rv;
+            }
+            
         }
 
     }

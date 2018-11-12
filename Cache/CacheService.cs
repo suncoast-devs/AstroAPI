@@ -32,7 +32,7 @@ namespace AstroAPI.Cache
         {
 
             var filter = Builders<CacheItem>.Filter.Eq(nameof(CacheItem.Url), url);
-            var rv = await _collection.Find(filter).FirstAsync();
+            var rv = await _collection.Find(filter).FirstOrDefaultAsync();
             return rv;
         }
     }

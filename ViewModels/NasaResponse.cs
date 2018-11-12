@@ -1,6 +1,6 @@
 namespace AstroAPI.ViewModels
 {
-    public class NasaResponse
+    public class NasaResponse:CachedItem
     {
         public string Message { get; set; }
         public string Copyright { get; set; }
