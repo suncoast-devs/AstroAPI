@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace AstroAPI.Controllers
 {
@@ -10,19 +12,21 @@ namespace AstroAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<object>>Get()
         {
-            return new string[] { "value1", "value2" };
+            return await new Cache.CacheService().InsertItem("some url", new { data = "goes here" });
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<object>> Get(int id)
         {
-            return "value";
+            return await new Cache.CacheService().GetItem("some url");
         }
+
 
         // POST api/values
         [HttpPost]
