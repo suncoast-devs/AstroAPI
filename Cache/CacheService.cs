@@ -13,7 +13,7 @@ namespace AstroAPI.Cache
         private readonly string CONNECTION_STRING = Environment.GetEnvironmentVariable("MONGO_CONNECTION") ?? "mongodb://localhost:27017";
         private IMongoClient _db;
         private IMongoCollection<CacheItem> _collection;
-        private readonly string DATABASE = "AstroCache";
+        private readonly string DATABASE = Environment.GetEnvironmentVariable("MONGO_DATABASE") ?? "AstroCache";
         private readonly string COLLECTION_NAME = "cache";
 
         public CacheService()
