@@ -113,7 +113,7 @@ namespace AstroAPI.ViewModels
         public List<object> flickr_images { get; set; }
     }
 
-    public class SpaceXLaunch : CachedItem
+    public class SpaceXLaunch
     {
         public int? flight_number { get; set; }
         public string mission_name { get; set; }

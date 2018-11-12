@@ -17,14 +17,15 @@ namespace AstroAPI.Controllers
         {
             _cache = new Cache.CacheService();
         }
-
+        
+        [Produces("application/json")]
         [HttpGet("ping")]
         public ActionResult<BasicResponse> Ping()
         {
             return new BasicResponse { Message = "pong" };
         }
 
-
+        [Produces("application/json")] 
         [HttpGet("launches/upcoming")]
         public async Task<ActionResult<IEnumerable<SpaceXLaunch>>> GetImageOfTheDay()
         {
