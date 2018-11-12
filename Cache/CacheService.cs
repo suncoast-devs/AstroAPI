@@ -1,7 +1,9 @@
-﻿using MongoDB.Driver;
+﻿using AstroAPI.ViewModels;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AstroAPI.Cache
@@ -19,8 +21,7 @@ namespace AstroAPI.Cache
             _db = new MongoClient(CONNECTION_STRING);
             _collection = _db.GetDatabase(DATABASE).GetCollection<CacheItem>(COLLECTION_NAME);
         }
-
-
+        
         public async Task<CacheItem> InsertItem(string url, object data)
         {
             var _item = new CacheItem { Url = url, Content = data };

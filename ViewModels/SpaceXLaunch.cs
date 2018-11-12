@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AstroAPI.ViewModels
@@ -112,7 +113,7 @@ namespace AstroAPI.ViewModels
         public List<object> flickr_images { get; set; }
     }
 
-    public class SpaceXLaunch
+    public class SpaceXLaunch : CachedItem
     {
         public int? flight_number { get; set; }
         public string mission_name { get; set; }
@@ -134,4 +135,7 @@ namespace AstroAPI.ViewModels
         public object static_fire_date_utc { get; set; }
         public object static_fire_date_unix { get; set; }
     }
+
+
+    
 }

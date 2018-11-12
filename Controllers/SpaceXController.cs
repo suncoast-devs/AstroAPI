@@ -12,6 +12,12 @@ namespace AstroAPI.Controllers
     [ApiController]
     public class SpaceXController : ControllerBase
     {
+        readonly Cache.CacheService _cache;
+        public SpaceXController()
+        {
+            _cache = new Cache.CacheService();
+        }
+
         [HttpGet("ping")]
         public ActionResult<BasicResponse> Ping()
         {
@@ -23,11 +29,21 @@ namespace AstroAPI.Controllers
         public async Task<ActionResult<IEnumerable<SpaceXLaunch>>> GetImageOfTheDay()
         {
             var client = new HttpClient();
-            var response = await client.GetAsync($"https://api.spacexdata.com/v3/launches/upcoming");
-            // TODO, cache things!
-            // response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsAsync<IEnumerable<SpaceXLaunch>>();
-            return Ok(result);
+            var service = new Cache.CacheService();
+            var url = $"https://api.spacexdata.com/v3/launches/upcoming";
+            var cached = await service.GetItem(url);
+            if (cached == null)
+            {
+                var response = await client.GetAsync(url);
+                var result = await response.Content.ReadAsAsync<IEnumerable<SpaceXLaunch>>();
+                await service.InsertItem(url, result);
+                return Ok(result);
+            }
+            else
+            {
+                var rv = cached.Content as IEnumerable<SpaceXLaunch>;
+                return Ok(rv);
+            }
         }
     }
 }

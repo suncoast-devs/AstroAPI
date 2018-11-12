@@ -15,13 +15,14 @@ namespace AstroAPI.Controllers
     {
 
         readonly IConfiguration _configuration;
+        readonly Cache.CacheService _cache;
 
         private string NASA_API_KEY = "";
         public NasaController(IConfiguration configuration)
         {
             _configuration = configuration;
             NASA_API_KEY = _configuration.GetValue<string>("NASA_API_KEY");
-
+            _cache = new Cache.CacheService(); 
         }
         [HttpGet("ping")]
         public ActionResult<BasicResponse> Ping()
@@ -32,15 +33,15 @@ namespace AstroAPI.Controllers
         [HttpGet("apod")]
         public async Task<ActionResult<NasaResponse>> GetImageOfTheDay()
         {
+            var url = $"https://api.nasa.gov/planetary/apod?api_key={this.NASA_API_KEY}";
             var client = new HttpClient();
-            var _url = $"https://api.nasa.gov/planetary/apod?api_key={this.NASA_API_KEY}";
             var service = new Cache.CacheService();
-            var cached = await service.GetItem(_url);
+            var cached = await service.GetItem(url);
             if (cached == null)
             {
-                var response = await client.GetAsync(_url);
+                var response = await client.GetAsync(url);
                 var result = await response.Content.ReadAsAsync<NasaResponse>();
-                await service.InsertItem(_url, result);
+                await service.InsertItem(url, result);
                 result.FromCache = false;
                 return result;
             }
@@ -50,8 +51,8 @@ namespace AstroAPI.Controllers
                 rv.FromCache = true;
                 return rv;
             }
-            
         }
+
 
     }
 }
