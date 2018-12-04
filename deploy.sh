@@ -1,4 +1,5 @@
-﻿dotnet publish -c Release 
+﻿
+dotnet publish -c Release 
 
 cp dockerfile ./bin/release/netcoreapp2.1/publish
 
