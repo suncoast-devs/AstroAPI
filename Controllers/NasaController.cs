@@ -22,7 +22,7 @@ namespace AstroAPI.Controllers
         {
             _configuration = configuration;
             NASA_API_KEY = _configuration.GetValue<string>("NASA_API_KEY");
-            _cache = new Cache.CacheService(); 
+            _cache = new Cache.CacheService();
         }
 
 
@@ -39,20 +39,9 @@ namespace AstroAPI.Controllers
         {
             var url = $"https://api.nasa.gov/planetary/apod?api_key={this.NASA_API_KEY}";
             var client = new HttpClient();
-            var service = new Cache.CacheService();
-            var cached = await service.GetItem(url);
-            if (cached == null)
-            {
-                var response = await client.GetAsync(url);
-                var result = await response.Content.ReadAsAsync<NasaResponse>();
-                await service.InsertItem(url, result);
-                return result;
-            }
-            else
-            {
-                var rv = cached.Content as NasaResponse;
-                return rv;
-            }
+            var response = await client.GetAsync(url);
+            var result = await response.Content.ReadAsAsync<NasaResponse>();
+            return result;
         }
 
 
