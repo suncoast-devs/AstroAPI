@@ -3,14 +3,23 @@ title: Metadata
 tags: 1, 2, 3, 4
 ---
 
-# Sets are represented as a
-# Mapping where each key is
-# associated with a null value
+
 --- !!set
 ? Mark McGwire
 ? Sammy Sosa
 ? Ken Griff
 
+
+---
+time: 20:03:20
+player: Sammy Sosa
+action: strike (miss)
+...
+---
+time: 20:03:47
+player: Sammy Sosa
+action: grand slam
+...
 
 # SDG Astro API
 
